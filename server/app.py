@@ -10,8 +10,11 @@ import uvicorn
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Initializing database...")
-    init_db()
-    print("Database ready.")
+    try:
+        init_db()
+        print("Database ready.")
+    except Exception as e:
+        print(f"Database initialization failed: {e}")
     yield
 
 app = FastAPI(title="FitTracker API", lifespan=lifespan)
