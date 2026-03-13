@@ -7,10 +7,30 @@ load_dotenv()
 
 def get_connection():
     url = os.getenv("DATABASE_URL", "")
-    if url:
-        url = url.strip().replace("\n", "").replace("\r", "")
-        # Log masked URL for verification in Vercel logs
-        print(f"Connecting to DB (sanitized): {url[:20]}...{url[-20:]}")
+    if not url:
+        return psycopg2.connect("", cursor_factory=RealDictCursor)
+        
+    # Clean the URL (inspired by robust production patterns)
+    url = url.strip().replace("\n", "").replace("\r", "")
+    
+    # Remove 'psql ' prefixes if accidentally pasted
+    if url.startswith("psql '") and url.endswith("'"):
+        url = url[6:-1]
+    elif url.startswith("psql "):
+        url = url[5:]
+
+    # Remove problematic query parameters for serverless environments
+    if "?" in url:
+        base_url, query = url.split("?", 1)
+        params = query.split("&")
+        # Keep sslmode=require but strip channel_binding which causes issues with some libpq versions
+        filtered_params = [p for p in params if not p.startswith("channel_binding=")]
+        if filtered_params:
+            url = f"{base_url}?{'&'.join(filtered_params)}"
+        else:
+            url = base_url
+
+    print(f"Connecting to DB (sanitized): {url[:25]}...{url[-15:]}")
     return psycopg2.connect(url, cursor_factory=RealDictCursor)
 
 def init_db():
