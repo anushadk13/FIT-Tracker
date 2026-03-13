@@ -5,12 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-if DATABASE_URL:
-    DATABASE_URL = DATABASE_URL.strip()
-
 def get_connection():
-    return psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+    url = os.getenv("DATABASE_URL", "")
+    if url:
+        url = url.strip().replace("\n", "").replace("\r", "")
+    return psycopg2.connect(url, cursor_factory=RealDictCursor)
 
 def init_db():
     conn = get_connection()
