@@ -177,44 +177,45 @@ export default function ExpenseTracker() {
 
   return (
     <div className="fade-in space-y-8 max-w-7xl mx-auto pb-20">
-      {/* Dynamic Header Summary */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 px-2">
-        <div>
-          <h2 className="text-3xl font-black text-white tracking-tight">Financial Audit</h2>
-          <div className="mt-2 text-slate-400 font-bold text-sm flex items-center gap-2">
-            <span>{formatRange(startDate, endDate)}</span>
-            <span className="opacity-30">→</span>
-            <span className="text-neon-blue">{numDays} Days</span>
-            <span className="opacity-30">→</span>
-            <span className="text-white bg-white/10 px-2 py-0.5 rounded-md">{totalAud} AUD</span>
+      {/* Selection Header - Responsive */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-1 md:px-2">
+        <div className="w-full md:w-auto">
+          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">Acquisition Hub</h2>
+          <div className="mt-2 text-slate-400 font-bold text-[10px] md:text-sm flex flex-wrap items-center gap-2">
+            <span className="bg-white/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-lg whitespace-nowrap">{formatRange(startDate, endDate)}</span>
+            <span className="hidden md:inline opacity-30">→</span>
+            <span className="text-neon-blue bg-white/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-lg">{numDays} Days</span>
+            <span className="hidden md:inline opacity-30">→</span>
+            <span className="text-white bg-white/10 px-2 py-1 md:py-0.5 rounded-lg whitespace-nowrap">{totalAud} AUD</span>
           </div>
         </div>
-        <div className="flex bg-black/20 p-2 rounded-2xl border border-white/5 space-x-4">
-          <div className="space-y-1">
-            <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest px-2">From</p>
+
+        <div className="flex bg-black/40 backdrop-blur-md p-2 rounded-2xl border border-white/5 w-full md:w-auto overflow-x-auto divide-x divide-white/5">
+          <div className="space-y-1 min-w-[110px] flex-1 px-1">
+            <p className="text-[8px] text-slate-600 font-black uppercase tracking-widest px-2 leading-none">From</p>
             <input
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="bg-transparent text-white text-xs font-bold focus:outline-none px-2"
+              className="bg-transparent text-white text-xs font-bold focus:outline-none px-2 w-full mt-1"
             />
           </div>
-          <div className="w-px h-8 bg-white/5" />
-          <div className="space-y-1">
-            <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest px-2">To</p>
+          <div className="space-y-1 min-w-[110px] flex-1 px-1">
+            <p className="text-[8px] text-slate-600 font-black uppercase tracking-widest px-2 leading-none">To</p>
             <input
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="bg-transparent text-white text-xs font-bold focus:outline-none px-2"
+              className="bg-transparent text-white text-xs font-bold focus:outline-none px-2 w-full mt-1"
             />
           </div>
         </div>
       </div>
 
-      {/* Entry Table */}
-      <div className="glass rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
-        <div className="overflow-x-auto">
+      {/* Entry Container - Responsive */}
+      <div className="glass rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
+        {/* Desktop View Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-white/[0.02] border-b border-white/10">
@@ -260,11 +261,11 @@ export default function ExpenseTracker() {
                     />
                   </td>
                   <td className="py-5 px-6 border-r border-white/5">
-                    <div className="text-slate-400 font-bold text-xs bg-black/20 px-3 py-1.5 rounded-lg inline-block">
-                      {numDays > 0 ? `${numDays} Days` : '-'}
+                    <div className="text-slate-400 font-bold text-xs bg-black/20 px-3 py-1.5 rounded-lg inline-block text-center min-w-[60px]">
+                      {numDays > 0 ? `${numDays}D` : '-'}
                     </div>
                   </td>
-                  <td className="py-5 px-6 italic text-slate-500 text-xs">
+                  <td className="py-5 px-6 italic text-slate-500 text-[10px] uppercase font-black tracking-tighter">
                     {formatRange(startDate, endDate)}
                   </td>
                 </tr>
@@ -272,12 +273,56 @@ export default function ExpenseTracker() {
             </tbody>
           </table>
         </div>
-        <div className="p-6 bg-black/20 flex justify-between items-center border-t border-white/5">
-          <div className="text-slate-500 text-[10px] font-black uppercase tracking-widest">Awaiting Entry for {ENTRY_ITEMS.length} Items</div>
+
+        {/* Mobile View Card List */}
+        <div className="md:hidden divide-y divide-white/[0.03] p-4 space-y-4">
+           {ENTRY_ITEMS.map(item => (
+             <div key={item.id} className="space-y-3 bg-black/20 p-4 rounded-2xl border border-white/5">
+                <div className="flex justify-between items-center">
+                   <h4 className="text-white font-black text-sm uppercase tracking-tighter">{item.label}</h4>
+                   <div className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">{numDays} Days</div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3">
+                   <div className="space-y-1">
+                      <p className="text-[8px] text-slate-600 font-black uppercase px-1">Quantity</p>
+                      <input
+                        placeholder="Qty"
+                        value={gridData[item.id].quantity}
+                        onChange={e => handleGridChange(item.id, 'quantity', e.target.value)}
+                        className="w-full bg-black/40 border border-white/5 rounded-xl px-3 py-2 text-white text-xs focus:border-neon-blue outline-none"
+                      />
+                   </div>
+                   <div className="space-y-1">
+                      <p className="text-[8px] text-slate-600 font-black uppercase px-1">Cost (AUD)</p>
+                      <input
+                        type="number"
+                        placeholder="$0.00"
+                        value={gridData[item.id].cost}
+                        onChange={e => handleGridChange(item.id, 'cost', e.target.value)}
+                        className="w-full bg-black/40 border border-white/5 rounded-xl px-3 py-2 text-white text-xs focus:border-neon-blue outline-none"
+                      />
+                   </div>
+                </div>
+                <div className="space-y-1">
+                   <p className="text-[8px] text-slate-600 font-black uppercase px-1">Daily Serving</p>
+                   <input
+                     placeholder="e.g. 100g"
+                     value={gridData[item.id].serving}
+                     onChange={e => handleGridChange(item.id, 'serving', e.target.value)}
+                     className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-3 py-2 text-white text-xs focus:border-neon-blue outline-none"
+                   />
+                </div>
+             </div>
+           ))}
+        </div>
+
+        <div className="p-4 md:p-6 bg-black/20 flex justify-between items-center border-t border-white/5">
+          <div className="text-slate-500 text-[9px] md:text-[10px] font-black uppercase tracking-widest truncate mr-2">Awaiting Entry for {ENTRY_ITEMS.length} Items</div>
           <button
             onClick={handleLogAll}
             disabled={submitting}
-            className="gradient-blue text-[#0a0e1a] font-black uppercase tracking-widest px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-lg shadow-neon-blue/20 disabled:opacity-30 text-xs"
+            className="gradient-blue text-[#0a0e1a] font-black uppercase tracking-widest px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-lg shadow-neon-blue/20 disabled:opacity-30 text-xs whitespace-nowrap"
           >
             {submitting ? '...' : 'Done'}
           </button>
@@ -285,23 +330,28 @@ export default function ExpenseTracker() {
       </div>
 
       {/* Historical Audit Table - NOW COLLAPSED */}
-      <div className="space-y-4">
-        <div className="flex justify-between items-center px-4">
-          <h3 className="text-white text-lg font-black uppercase tracking-widest">Historical Audits</h3>
-          <div className="flex items-center gap-4 bg-black/20 px-4 py-2 rounded-xl border border-white/5">
-            <select
-              value={filterMonth}
-              onChange={e => setFilterMonth(e.target.value)}
-              className="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer"
-            >
-              {months.map(m => (
-                <option key={m} value={m} className="bg-[#0a0e1a]">{formatMonth(m)}</option>
-              ))}
-            </select>
-            <div className="w-px h-4 bg-white/10" />
-            <div className="flex items-center gap-1">
-              <span className="text-slate-500 text-[9px] font-black uppercase tracking-widest mt-0.5">{formatMonth(filterMonth).split(' ')[0]} Total:</span>
-              <span className="text-neon-blue font-black text-sm">${monthlyTotal}</span>
+      <div className="space-y-4 px-1">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 gap-4">
+          <h3 className="text-white text-base md:text-lg font-black uppercase tracking-widest">Historical Audits</h3>
+          <div className="flex items-center gap-6 w-full sm:w-auto">
+            <div className="flex items-center gap-3 bg-black/20 px-4 py-2 rounded-xl border border-white/5 flex-1 sm:flex-none">
+              <span className="text-[10px] text-slate-600 font-bold uppercase shrink-0">Filter</span>
+              <select
+                value={filterMonth}
+                onChange={e => setFilterMonth(e.target.value)}
+                className="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer w-full"
+              >
+                {months.map(m => (
+                  <option key={m} value={m} className="bg-[#0a0e1a]">{formatMonth(m)}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="w-px h-4 bg-white/10 hidden sm:block" />
+              <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+                <span className="text-slate-500 text-[9px] font-black uppercase tracking-widest leading-none sm:mt-0.5">{formatMonth(filterMonth).split(' ')[0]} Total:</span>
+                <span className="text-neon-blue font-black text-sm md:text-base">${monthlyTotal}</span>
+              </div>
             </div>
           </div>
         </div>

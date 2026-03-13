@@ -116,43 +116,43 @@ export default function GymSchedule() {
   return (
     <div className="fade-in space-y-6">
       {/* Header */}
-      <div className="glass rounded-2xl p-6">
-        <div className="flex justify-between items-start">
+      <div className="glass rounded-2xl p-4 md:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-1">Gym Schedule</h2>
-            <p className="text-slate-400 text-sm">Your weekly workout plan. Changes save every 2 minutes.</p>
+            <h2 className="text-xl md:text-2xl font-bold text-white mb-1">Gym Schedule</h2>
+            <p className="text-slate-400 text-xs md:text-sm">Your weekly workout plan. Changes save every 2 minutes.</p>
           </div>
-          <div className="text-right">
+          <div className="text-left sm:text-right w-full sm:w-auto">
             {pendingIds.size > 0 ? (
-              <span className="text-xs bg-neon-purple/20 text-neon-purple px-3 py-1 rounded-full animate-pulse font-medium">
+              <span className="text-[10px] md:text-xs bg-neon-purple/20 text-neon-purple px-3 py-1 rounded-full animate-pulse font-medium">
                 {pendingIds.size} unsaved changes
               </span>
             ) : (
-              <span className="text-xs bg-neon-purple/10 text-neon-purple/60 px-3 py-1 rounded-full font-medium">
+              <span className="text-[10px] md:text-xs bg-neon-purple/10 text-neon-purple/60 px-3 py-1 rounded-full font-medium">
                 All changes saved
               </span>
             )}
             {lastSync && (
-              <p className="text-[10px] text-slate-500 mt-1">
+              <p className="text-[9px] md:text-[10px] text-slate-500 mt-1 uppercase font-black tracking-widest">
                 Last sync: {lastSync.toLocaleTimeString()}
               </p>
             )}
           </div>
         </div>
         
-        <div className="flex gap-4 mt-6">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mt-6">
           <div className="glass rounded-xl p-3 flex-1 text-center">
-            <p className="text-slate-400 text-xs">This Week</p>
-            <p className="text-neon-purple text-2xl font-bold">{completed}/{workoutDays}</p>
-            <p className="text-slate-500 text-xs">completed</p>
+            <p className="text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest">This Week</p>
+            <p className="text-neon-purple text-xl md:text-2xl font-black mt-1">{completed}/{workoutDays}</p>
+            <p className="text-slate-500 text-[9px] md:text-xs font-bold uppercase tracking-widest">completed</p>
           </div>
           <button 
             onClick={syncData}
             disabled={isSyncing || pendingIds.size === 0}
             className="glass rounded-xl p-3 flex-1 text-center hover:bg-white/5 transition-colors disabled:opacity-30"
           >
-            <p className="text-slate-400 text-xs">Syncing Status</p>
-            <p className="text-white font-bold text-lg">{isSyncing ? 'Syncing...' : 'Sync Now'}</p>
+            <p className="text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest">Syncing Status</p>
+            <p className="text-white font-black text-base md:text-lg mt-1">{isSyncing ? 'Syncing...' : 'Sync Now'}</p>
           </button>
         </div>
       </div>

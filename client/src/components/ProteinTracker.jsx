@@ -239,21 +239,28 @@ export default function ProteinTracker() {
         </div>
       </div>
 
-      {/* Main Table Container */}
-      <div className="glass rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
+      {/* Main Table Container - Now Responsive */}
+      <div className="glass rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
         {/* Table Header / Toolbar */}
-        <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02] flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-4">
-            <div className="flex bg-black/20 p-1.5 rounded-2xl border border-white/5">
-              <button onClick={handlePrev} disabled={viewEndDate <= MIN_DATE} className="p-2 hover:bg-white/5 rounded-xl text-slate-400 disabled:opacity-10 transition-all">←</button>
-              <button onClick={() => setViewEndDate(todayStr)} className={`px-4 py-1.5 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${viewEndDate === todayStr ? 'bg-neon-green text-[#0a0e1a]' : 'text-slate-500 hover:text-white'}`}>Today</button>
-              <button onClick={handleNext} className="p-2 hover:bg-white/5 rounded-xl text-slate-400 transition-all">→</button>
+        <div className="px-4 md:px-8 py-4 md:py-6 border-b border-white/5 bg-white/[0.02] flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center justify-between w-full md:w-auto gap-4">
+            <div className="flex bg-black/20 p-1 rounded-xl md:rounded-2xl border border-white/5">
+              <button onClick={handlePrev} disabled={viewEndDate <= MIN_DATE} className="p-2 hover:bg-white/5 rounded-lg md:rounded-xl text-slate-400 disabled:opacity-10 transition-all">←</button>
+              <button 
+                onClick={() => setViewEndDate(todayStr)} 
+                className={`px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-black uppercase tracking-widest rounded-lg md:rounded-xl transition-all ${viewEndDate === todayStr ? 'bg-neon-green text-[#0a0e1a]' : 'text-slate-500 hover:text-white'}`}
+              >
+                Today
+              </button>
+              <button onClick={handleNext} className="p-2 hover:bg-white/5 rounded-lg md:rounded-xl text-slate-400 transition-all">→</button>
             </div>
+            <p className="md:hidden text-slate-600 text-[9px] font-black uppercase tracking-widest">Auto-sync 120s</p>
           </div>
-          <p className="text-slate-500 text-xs font-medium">Auto-syncing every 120s</p>
+          <p className="hidden md:block text-slate-500 text-xs font-medium">Auto-syncing every 120s</p>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Desktop View Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="bg-white/[0.01]">
@@ -274,7 +281,6 @@ export default function ProteinTracker() {
                 const log = logs[date] || {}
                 const total = parseFloat(calcTotal(date))
                 const isToday = date === todayStr
-                const isPending = pendingDates.has(date)
 
                 return (
                   <tr key={date} className={`group hover:bg-white/[0.02] transition-colors ${isToday ? 'bg-neon-green/[0.02]' : ''}`}>
@@ -309,8 +315,8 @@ export default function ProteinTracker() {
                     <td className="py-5 px-8 text-right">
                       <div className="flex flex-col items-end">
                         <span className={`text-lg font-black tracking-tighter ${total === 0 ? 'text-slate-700' :
-                            total >= 50 ? 'text-neon-green drop-shadow-[0_0_8px_rgba(57,255,20,0.4)]' : 'text-yellow-400'
-                          }`}>
+                             total >= 50 ? 'text-neon-green drop-shadow-[0_0_8px_rgba(57,255,20,0.4)]' : 'text-yellow-400'
+                           }`}>
                           {total > 0 ? `${total}g` : '0.0g'}
                         </span>
                         {total > 0 && (
@@ -326,18 +332,64 @@ export default function ProteinTracker() {
             </tbody>
           </table>
         </div>
+
+        {/* Mobile View Card List */}
+        <div className="md:hidden divide-y divide-white/[0.03]">
+          {dates.map((date) => {
+             const log = logs[date] || {}
+             const total = parseFloat(calcTotal(date))
+             const isToday = date === todayStr
+             
+             return (
+               <div key={date} className={`px-4 py-5 space-y-4 ${isToday ? 'bg-neon-green/[0.03]' : ''}`}>
+                 <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-10 h-10 rounded-xl flex flex-col items-center justify-center border shadow-sm ${isToday ? 'bg-neon-green text-black border-neon-green' : 'bg-black/40 text-slate-500 border-white/5'}`}>
+                        <span className="text-[8px] font-black uppercase leading-none">{getDayShort(date)}</span>
+                        <span className="text-xs font-black">{date.split('-')[2]}</span>
+                      </div>
+                      <p className={`text-sm font-black tracking-tight ${isToday ? 'text-neon-green' : 'text-slate-200'}`}>
+                        {formatDateLabel(date)}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                       <p className={`text-base font-black tracking-tighter ${total === 0 ? 'text-slate-700' : total >= 50 ? 'text-neon-green' : 'text-yellow-400'}`}>
+                         {total > 0 ? `${total}g` : '0.0g'}
+                       </p>
+                       <div className="w-12 h-1 bg-white/5 rounded-full mt-1 overflow-hidden ml-auto">
+                          <div className={`h-full rounded-full ${total >= 50 ? 'bg-neon-green' : 'bg-yellow-400'}`} style={{ width: `${Math.min((total / 50) * 100, 100)}%` }} />
+                       </div>
+                    </div>
+                 </div>
+
+                 <div className="grid grid-cols-4 gap-2">
+                    {foods.map(f => (
+                      <div 
+                        key={f.key} 
+                        onClick={() => toggleFood(date, f.key)}
+                        className={`flex flex-col items-center gap-2 p-2 rounded-2xl border transition-all active:scale-95 ${log[f.key] ? 'bg-white/10 border-white/20' : 'bg-black/20 border-white/5 opacity-40'}`}
+                      >
+                         <span className="text-xl">{f.icon}</span>
+                         <span className="text-[8px] font-black uppercase tracking-tight text-slate-500">{f.label}</span>
+                      </div>
+                    ))}
+                 </div>
+               </div>
+             )
+          })}
+        </div>
       </div>
 
       {/* Footer Legend */}
-      <div className="flex justify-center gap-8 text-[10px] font-black uppercase tracking-widest text-slate-500 py-4">
+      <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-[9px] md:text-[10px] font-black uppercase tracking-widest text-slate-500 py-4 px-4 text-center">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-neon-green" /> Goal Met
+          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-neon-green" /> Goal Met
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-yellow-400" /> Pending Goal
+          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-yellow-400" /> Pending Goal
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 border border-white/20 rounded-full" /> No Intake
+          <span className="w-1.5 h-1.5 md:w-2 md:h-2 border border-white/20 rounded-full" /> No Intake
         </div>
       </div>
     </div>
