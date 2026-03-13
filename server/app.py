@@ -19,6 +19,22 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="FitTracker API", lifespan=lifespan)
 
+@app.get("/api/health")
+def health_check():
+    try:
+        from db import get_connection
+        conn = get_connection()
+        conn.close()
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"failed: {e}"
+        
+    return {
+        "status": "online",
+        "version": "1.0.1-sanitized",
+        "database": db_status
+    }
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
