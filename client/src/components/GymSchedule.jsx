@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 
-const API = ''
+const API = import.meta.env.VITE_API_URL || ''
 
 const DAY_COLORS = {
   Monday: 'text-red-400',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 
-const API = ''
+const API = import.meta.env.VITE_API_URL || ''
 
 const PROTEIN_VALUES = {
   soy_milk: 7.5,
