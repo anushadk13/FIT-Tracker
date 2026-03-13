@@ -9,6 +9,8 @@ def get_connection():
     url = os.getenv("DATABASE_URL", "")
     if url:
         url = url.strip().replace("\n", "").replace("\r", "")
+        # Log masked URL for verification in Vercel logs
+        print(f"Connecting to DB (sanitized): {url[:20]}...{url[-20:]}")
     return psycopg2.connect(url, cursor_factory=RealDictCursor)
 
 def init_db():
