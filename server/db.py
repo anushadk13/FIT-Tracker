@@ -5,6 +5,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Forcefully remove any malformed Postgres environment variables set by Vercel
+# that psycopg2's underlying libpq library might automatically pick up.
+for key in list(os.environ.keys()):
+    if key.startswith("PG"):
+        del os.environ[key]
+
 DATABASE_URL = "postgresql://neondb_owner:npg_xeMbRI3PFil2@ep-red-cloud-aizzebtr-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 def get_connection():
