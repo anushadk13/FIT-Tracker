@@ -11,10 +11,22 @@ for key in list(os.environ.keys()):
     if key.startswith("PG"):
         del os.environ[key]
 
+from urllib.parse import urlparse
+
 DATABASE_URL = "postgresql://neondb_owner:npg_xeMbRI3PFil2@ep-red-cloud-aizzebtr-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
 def get_connection():
-    return psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+    result = urlparse(DATABASE_URL)
+    
+    return psycopg2.connect(
+        database=result.path[1:],
+        user=result.username,
+        password=result.password,
+        host=result.hostname,
+        port=result.port or 5432,
+        sslmode='require',
+        cursor_factory=RealDictCursor
+    )
 
 def init_db():
     conn = get_connection()
