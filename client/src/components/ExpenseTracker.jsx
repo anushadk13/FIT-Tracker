@@ -181,33 +181,33 @@ export default function ExpenseTracker() {
       {/* Selection Header - Responsive */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 px-1 md:px-2">
         <div className="w-full md:w-auto">
-          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">Acquisition Hub</h2>
-          <div className="mt-2 text-slate-400 font-bold text-[10px] md:text-sm flex flex-wrap items-center gap-2">
-            <span className="bg-white/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-lg whitespace-nowrap">{formatRange(startDate, endDate)}</span>
+          <h2 className="text-2xl md:text-3xl font-black text-[var(--text-main)] tracking-tight">Acquisition Hub</h2>
+          <div className="mt-2 text-[var(--text-muted)] font-bold text-[10px] md:text-sm flex flex-wrap items-center gap-2">
+            <span className="bg-[var(--glass-bg)] md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-lg whitespace-nowrap">{formatRange(startDate, endDate)}</span>
             <span className="hidden md:inline opacity-30">→</span>
-            <span className="text-neon-blue bg-white/5 md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-lg">{numDays} Days</span>
+            <span className="text-neon-blue bg-[var(--glass-bg)] md:bg-transparent px-2 md:px-0 py-1 md:py-0 rounded-lg">{numDays} Days</span>
             <span className="hidden md:inline opacity-30">→</span>
-            <span className="text-white bg-white/10 px-2 py-1 md:py-0.5 rounded-lg whitespace-nowrap">{totalAud} AUD</span>
+            <span className="text-[var(--text-main)] bg-[var(--glass-bg)] px-2 py-1 md:py-0.5 rounded-lg whitespace-nowrap">{totalAud} AUD</span>
           </div>
         </div>
 
-        <div className="flex bg-black/40 backdrop-blur-md p-2 rounded-2xl border border-white/5 w-full md:w-auto overflow-x-auto divide-x divide-white/5">
+        <div className="flex bg-[var(--bg-side)]/40 backdrop-blur-md p-2 rounded-2xl border border-[var(--sidebar-border)] w-full md:w-auto overflow-x-auto divide-x divide-[var(--sidebar-border)]">
           <div className="space-y-1 min-w-[110px] flex-1 px-1">
-            <p className="text-[8px] text-slate-600 font-black uppercase tracking-widest px-2 leading-none">From</p>
+            <p className="text-[8px] text-[var(--text-dim)] font-black uppercase tracking-widest px-2 leading-none">From</p>
             <input
               type="date"
               value={startDate}
               onChange={e => setStartDate(e.target.value)}
-              className="bg-transparent text-white text-xs font-bold focus:outline-none px-2 w-full mt-1"
+              className="bg-transparent text-[var(--text-main)] text-xs font-bold focus:outline-none px-2 w-full mt-1"
             />
           </div>
           <div className="space-y-1 min-w-[110px] flex-1 px-1">
-            <p className="text-[8px] text-slate-600 font-black uppercase tracking-widest px-2 leading-none">To</p>
+            <p className="text-[8px] text-[var(--text-dim)] font-black uppercase tracking-widest px-2 leading-none">To</p>
             <input
               type="date"
               value={endDate}
               onChange={e => setEndDate(e.target.value)}
-              className="bg-transparent text-white text-xs font-bold focus:outline-none px-2 w-full mt-1"
+              className="bg-transparent text-[var(--text-main)] text-xs font-bold focus:outline-none px-2 w-full mt-1"
             />
           </div>
         </div>
@@ -219,54 +219,54 @@ export default function ExpenseTracker() {
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-white/[0.02] border-b border-white/10">
-                <th className="py-6 px-8 text-slate-500 text-[10px] font-black uppercase tracking-widest border-r border-white/5 w-48">Asset Class</th>
-                <th className="py-6 px-6 text-slate-500 text-[10px] font-black uppercase tracking-widest border-r border-white/5">Quantity</th>
-                <th className="py-6 px-6 text-slate-500 text-[10px] font-black uppercase tracking-widest border-r border-white/5">Total Cost</th>
-                <th className="py-6 px-6 text-slate-500 text-[10px] font-black uppercase tracking-widest border-r border-white/5">Daily Serving</th>
-                <th className="py-6 px-6 text-slate-500 text-[10px] font-black uppercase tracking-widest border-r border-white/5">Duration</th>
-                <th className="py-6 px-6 text-slate-500 text-[10px] font-black uppercase tracking-widest">Entry Date</th>
+              <tr className="bg-[var(--glass-bg)]/20 border-b border-[var(--sidebar-border)]">
+                <th className="py-6 px-8 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-widest border-r border-[var(--sidebar-border)] w-48">Asset Class</th>
+                <th className="py-6 px-6 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-widest border-r border-[var(--sidebar-border)]">Quantity</th>
+                <th className="py-6 px-6 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-widest border-r border-[var(--sidebar-border)]">Total Cost</th>
+                <th className="py-6 px-6 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-widest border-r border-[var(--sidebar-border)]">Daily Serving</th>
+                <th className="py-6 px-6 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-widest border-r border-[var(--sidebar-border)]">Duration</th>
+                <th className="py-6 px-6 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-widest">Entry Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.03]">
+            <tbody className="divide-y divide-[var(--sidebar-border)]">
               {ENTRY_ITEMS.map(item => (
-                <tr key={item.id} className="hover:bg-white/[0.01]">
-                  <td className="py-5 px-8 font-bold text-white border-r border-white/5">{item.label}</td>
-                  <td className="py-5 px-6 border-r border-white/5">
+                <tr key={item.id} className="hover:bg-[var(--glass-bg)]/10 transition-colors">
+                  <td className="py-5 px-8 font-bold text-[var(--text-main)] border-r border-[var(--sidebar-border)]">{item.label}</td>
+                  <td className="py-5 px-6 border-r border-[var(--sidebar-border)]">
                     <input
                       placeholder="1kg - 1000g"
                       value={gridData[item.id].quantity}
                       onChange={e => handleGridChange(item.id, 'quantity', e.target.value)}
-                      className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-white text-sm focus:border-neon-blue outline-none placeholder:text-slate-700"
+                      className="w-full bg-[var(--bg-main)] border border-[var(--sidebar-border)] rounded-xl px-4 py-2 text-[var(--text-main)] text-sm focus:border-neon-blue outline-none placeholder:text-[var(--text-dim)]/50"
                     />
                   </td>
-                  <td className="py-5 px-6 border-r border-white/5">
+                  <td className="py-5 px-6 border-r border-[var(--sidebar-border)]">
                     <div className="flex items-center gap-2">
-                      <span className="text-slate-600 text-sm">$</span>
+                      <span className="text-[var(--text-dim)] text-sm">$</span>
                       <input
                         type="number"
                         step="0.01"
                         placeholder="0.00"
                         value={gridData[item.id].cost}
                         onChange={e => handleGridChange(item.id, 'cost', e.target.value)}
-                        className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2 text-white text-sm focus:border-neon-blue outline-none"
+                        className="w-full bg-[var(--bg-main)] border border-[var(--sidebar-border)] rounded-xl px-4 py-2 text-[var(--text-main)] text-sm focus:border-neon-blue outline-none"
                       />
                     </div>
                   </td>
-                  <td className="py-5 px-6 border-r border-white/5">
+                  <td className="py-5 px-6 border-r border-[var(--sidebar-border)]">
                     <input
                       placeholder="100g"
                       value={gridData[item.id].serving}
                       onChange={e => handleGridChange(item.id, 'serving', e.target.value)}
-                      className="w-full bg-white/[0.03] border border-white/5 rounded-xl px-4 py-2 text-white text-sm focus:border-neon-blue outline-none placeholder:text-slate-700"
+                      className="w-full bg-[var(--glass-bg)]/20 border border-[var(--sidebar-border)] rounded-xl px-4 py-2 text-[var(--text-main)] text-sm focus:border-neon-blue outline-none placeholder:text-[var(--text-dim)]/50"
                     />
                   </td>
-                  <td className="py-5 px-6 border-r border-white/5">
-                    <div className="text-slate-400 font-bold text-xs bg-black/20 px-3 py-1.5 rounded-lg inline-block text-center min-w-[60px]">
+                  <td className="py-5 px-6 border-r border-[var(--sidebar-border)]">
+                    <div className="text-[var(--text-muted)] font-bold text-xs bg-[var(--bg-main)] px-3 py-1.5 rounded-lg inline-block text-center min-w-[60px]">
                       {numDays > 0 ? `${numDays}D` : '-'}
                     </div>
                   </td>
-                  <td className="py-5 px-6 italic text-slate-500 text-[10px] uppercase font-black tracking-tighter">
+                  <td className="py-5 px-6 italic text-[var(--text-dim)] text-[10px] uppercase font-black tracking-tighter">
                     {formatRange(startDate, endDate)}
                   </td>
                 </tr>

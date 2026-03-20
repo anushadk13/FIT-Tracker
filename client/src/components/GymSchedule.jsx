@@ -120,8 +120,8 @@ export default function GymSchedule() {
       <div className="glass rounded-2xl p-4 md:p-6">
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-1">Gym Schedule</h2>
-            <p className="text-slate-400 text-xs md:text-sm">Your weekly workout plan. Changes save every 2 minutes.</p>
+            <h2 className="text-xl md:text-2xl font-bold text-[var(--text-main)] mb-1">Gym Schedule</h2>
+            <p className="text-[var(--text-dim)] text-xs md:text-sm">Your weekly workout plan. Changes save every 2 minutes.</p>
           </div>
           <div className="text-left sm:text-right w-full sm:w-auto">
             {pendingIds.size > 0 ? (
@@ -134,7 +134,7 @@ export default function GymSchedule() {
               </span>
             )}
             {lastSync && (
-              <p className="text-[9px] md:text-[10px] text-slate-500 mt-1 uppercase font-black tracking-widest">
+              <p className="text-[9px] md:text-[10px] text-[var(--text-dim)] mt-1 uppercase font-black tracking-widest">
                 Last sync: {lastSync.toLocaleTimeString()}
               </p>
             )}
@@ -143,17 +143,17 @@ export default function GymSchedule() {
         
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mt-6">
           <div className="glass rounded-xl p-3 flex-1 text-center">
-            <p className="text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest">This Week</p>
+            <p className="text-[var(--text-muted)] text-[10px] md:text-xs font-black uppercase tracking-widest">This Week</p>
             <p className="text-neon-purple text-xl md:text-2xl font-black mt-1">{completed}/{workoutDays}</p>
-            <p className="text-slate-500 text-[9px] md:text-xs font-bold uppercase tracking-widest">completed</p>
+            <p className="text-[var(--text-dim)] text-[9px] md:text-xs font-bold uppercase tracking-widest">completed</p>
           </div>
           <button 
             onClick={syncData}
             disabled={isSyncing || pendingIds.size === 0}
             className="glass rounded-xl p-3 flex-1 text-center hover:bg-white/5 transition-colors disabled:opacity-30"
           >
-            <p className="text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest">Syncing Status</p>
-            <p className="text-white font-black text-base md:text-lg mt-1">{isSyncing ? 'Syncing...' : 'Sync Now'}</p>
+            <p className="text-[var(--text-muted)] text-[10px] md:text-xs font-black uppercase tracking-widest">Syncing Status</p>
+            <p className="text-[var(--text-main)] font-black text-base md:text-lg mt-1">{isSyncing ? 'Syncing...' : 'Sync Now'}</p>
           </button>
         </div>
       </div>
@@ -193,18 +193,18 @@ export default function GymSchedule() {
                 <span className="text-xl">{isRest ? '😴' : getWorkoutIcon(entry.workout)}</span>
               </div>
 
-              {editing === entry.id ? (
+               {editing === entry.id ? (
                 <div className="flex gap-2 mt-2">
                   <input
                     autoFocus
                     value={editValue}
                     onChange={e => setEditValue(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') saveEdit(entry); if (e.key === 'Escape') setEditing(null) }}
-                    className="flex-1 bg-white/10 border border-neon-purple/50 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none"
+                    className="flex-1 bg-white/10 border border-neon-purple/50 rounded-lg px-3 py-1.5 text-[var(--text-main)] text-sm focus:outline-none"
                   />
                   <button
                     onClick={() => saveEdit(entry)}
-                    className="text-neon-purple hover:text-white px-2 py-1 rounded-lg transition-colors"
+                    className="text-neon-purple hover:text-[var(--text-main)] px-2 py-1 rounded-lg transition-colors"
                   >
                     ✓
                   </button>
@@ -212,7 +212,7 @@ export default function GymSchedule() {
               ) : (
                 <button
                   onClick={() => !isRest && startEdit(entry)}
-                  className={`text-left w-full font-semibold text-base mb-4 mt-1 ${isRest ? 'text-slate-500 cursor-default' : 'text-white hover:text-neon-purple transition-colors cursor-pointer'}`}
+                  className={`text-left w-full font-semibold text-base mb-4 mt-1 ${isRest ? 'text-[var(--text-dim)] cursor-default' : 'text-[var(--text-main)] hover:text-neon-purple transition-colors cursor-pointer'}`}
                 >
                   {entry.workout || 'Click to set'}
                 </button>
