@@ -276,54 +276,54 @@ export default function ExpenseTracker() {
         </div>
 
         {/* Mobile View Card List */}
-        <div className="md:hidden divide-y divide-white/[0.03] p-4 space-y-4">
+        <div className="md:hidden divide-y divide-[var(--sidebar-border)] p-4 space-y-4">
            {ENTRY_ITEMS.map(item => (
-             <div key={item.id} className="space-y-3 bg-black/20 p-4 rounded-2xl border border-white/5">
+             <div key={item.id} className="space-y-3 bg-[var(--bg-main)] p-4 rounded-2xl border border-[var(--sidebar-border)]">
                 <div className="flex justify-between items-center">
-                   <h4 className="text-white font-black text-sm uppercase tracking-tighter">{item.label}</h4>
-                   <div className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">{numDays} Days</div>
+                   <h4 className="text-[var(--text-main)] font-black text-sm uppercase tracking-tighter">{item.label}</h4>
+                   <div className="text-[10px] text-[var(--text-dim)] font-bold uppercase tracking-widest">{numDays} Days</div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                    <div className="space-y-1">
-                      <p className="text-[8px] text-slate-600 font-black uppercase px-1">Quantity</p>
+                      <p className="text-[8px] text-[var(--text-dim)] font-black uppercase px-1">Quantity</p>
                       <input
                         placeholder="Qty"
                         value={gridData[item.id].quantity}
                         onChange={e => handleGridChange(item.id, 'quantity', e.target.value)}
-                        className="w-full bg-black/40 border border-white/5 rounded-xl px-3 py-2 text-white text-xs focus:border-neon-blue outline-none"
+                        className="w-full bg-[var(--glass-bg)]/20 border border-[var(--sidebar-border)] rounded-xl px-3 py-2 text-[var(--text-main)] text-xs focus:border-neon-blue outline-none"
                       />
                    </div>
                    <div className="space-y-1">
-                      <p className="text-[8px] text-slate-600 font-black uppercase px-1">Cost (AUD)</p>
+                      <p className="text-[8px] text-[var(--text-dim)] font-black uppercase px-1">Cost (AUD)</p>
                       <input
                         type="number"
                         placeholder="$0.00"
                         value={gridData[item.id].cost}
                         onChange={e => handleGridChange(item.id, 'cost', e.target.value)}
-                        className="w-full bg-black/40 border border-white/5 rounded-xl px-3 py-2 text-white text-xs focus:border-neon-blue outline-none"
+                        className="w-full bg-[var(--glass-bg)]/20 border border-[var(--sidebar-border)] rounded-xl px-3 py-2 text-[var(--text-main)] text-xs focus:border-neon-blue outline-none"
                       />
                    </div>
                 </div>
                 <div className="space-y-1">
-                   <p className="text-[8px] text-slate-600 font-black uppercase px-1">Daily Serving</p>
+                   <p className="text-[8px] text-[var(--text-dim)] font-black uppercase px-1">Daily Serving</p>
                    <input
                      placeholder="e.g. 100g"
                      value={gridData[item.id].serving}
                      onChange={e => handleGridChange(item.id, 'serving', e.target.value)}
-                     className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-3 py-2 text-white text-xs focus:border-neon-blue outline-none"
+                     className="w-full bg-[var(--glass-bg)]/10 border border-[var(--sidebar-border)] rounded-xl px-3 py-2 text-[var(--text-main)] text-xs focus:border-neon-blue outline-none"
                    />
                 </div>
              </div>
            ))}
         </div>
 
-        <div className="p-4 md:p-6 bg-black/20 flex justify-between items-center border-t border-white/5">
-          <div className="text-slate-500 text-[9px] md:text-[10px] font-black uppercase tracking-widest truncate mr-2">Awaiting Entry for {ENTRY_ITEMS.length} Items</div>
+        <div className="p-4 md:p-6 bg-[var(--glass-bg)]/20 flex justify-between items-center border-t border-[var(--sidebar-border)]">
+          <div className="text-[var(--text-dim)] text-[9px] md:text-[10px] font-black uppercase tracking-widest truncate mr-2">Awaiting Entry for {ENTRY_ITEMS.length} Items</div>
           <button
             onClick={handleLogAll}
             disabled={submitting}
-            className="gradient-blue text-[#0a0e1a] font-black uppercase tracking-widest px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-lg shadow-neon-blue/20 disabled:opacity-30 text-xs whitespace-nowrap"
+            className="gradient-blue text-white font-black uppercase tracking-widest px-6 py-2.5 rounded-xl hover:scale-105 transition-all shadow-lg shadow-neon-blue/20 disabled:opacity-30 text-xs whitespace-nowrap"
           >
             {submitting ? '...' : 'Done'}
           </button>
@@ -333,24 +333,24 @@ export default function ExpenseTracker() {
       {/* Historical Audit Table - NOW COLLAPSED */}
       <div className="space-y-4 px-1">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 gap-4">
-          <h3 className="text-white text-base md:text-lg font-black uppercase tracking-widest">Historical Audits</h3>
+          <h3 className="text-[var(--text-main)] text-base md:text-lg font-black uppercase tracking-widest">Historical Audits</h3>
           <div className="flex items-center gap-6 w-full sm:w-auto">
-            <div className="flex items-center gap-3 bg-black/20 px-4 py-2 rounded-xl border border-white/5 flex-1 sm:flex-none">
-              <span className="text-[10px] text-slate-600 font-bold uppercase shrink-0">Filter</span>
+            <div className="flex items-center gap-3 bg-[var(--glass-bg)]/20 px-4 py-2 rounded-xl border border-[var(--sidebar-border)] flex-1 sm:flex-none">
+              <span className="text-[10px] text-[var(--text-dim)] font-bold uppercase shrink-0">Filter</span>
               <select
                 value={filterMonth}
                 onChange={e => setFilterMonth(e.target.value)}
-                className="bg-transparent text-white text-xs font-bold focus:outline-none cursor-pointer w-full"
+                className="bg-transparent text-[var(--text-main)] text-xs font-bold focus:outline-none cursor-pointer w-full"
               >
                 {months.map(m => (
-                  <option key={m} value={m} className="bg-[#0a0e1a]">{formatMonth(m)}</option>
+                  <option key={m} value={m} className="bg-[var(--bg-side)]">{formatMonth(m)}</option>
                 ))}
               </select>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <div className="w-px h-4 bg-white/10 hidden sm:block" />
+              <div className="w-px h-4 bg-[var(--sidebar-border)] hidden sm:block" />
               <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
-                <span className="text-slate-500 text-[9px] font-black uppercase tracking-widest leading-none sm:mt-0.5">{formatMonth(filterMonth).split(' ')[0]} Total:</span>
+                <span className="text-[var(--text-muted)] text-[9px] font-black uppercase tracking-widest leading-none sm:mt-0.5">{formatMonth(filterMonth).split(' ')[0]} Total:</span>
                 <span className="text-neon-blue font-black text-sm md:text-base">${monthlyTotal}</span>
               </div>
             </div>
@@ -363,38 +363,38 @@ export default function ExpenseTracker() {
           ) : groupedExpenses.map(group => {
             const isExpanded = expandedGroups.has(group.id)
             return (
-              <div key={group.id} className="glass rounded-[2rem] overflow-hidden border border-white/5 group transition-all">
+              <div key={group.id} className="glass rounded-[2rem] overflow-hidden border border-[var(--glass-border)] group transition-all">
                 {/* Collapsed Summary Header */}
                 <div
                   onClick={() => toggleGroup(group.id)}
-                  className="px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-white/[0.02] transition-colors"
+                  className="px-8 py-6 flex justify-between items-center cursor-pointer hover:bg-[var(--glass-bg)]/10 transition-colors"
                 >
                   <div className="flex items-center gap-6">
                     <div className="flex flex-col gap-2">
-                      <span className="text-white font-black text-base">{formatRange(group.date, group.end_date)}</span>
+                      <span className="text-[var(--text-main)] font-black text-base">{formatRange(group.date, group.end_date)}</span>
                       <div className="flex items-center gap-2">
                         {group.items.slice(0, 3).map((it, idx) => (
-                          <span key={idx} className="bg-white/5 text-[9px] text-slate-400 px-2 py-0.5 rounded-md font-bold uppercase">{it.item.split(' ')[0]}</span>
+                          <span key={idx} className="bg-[var(--glass-bg)]/20 text-[9px] text-[var(--text-muted)] px-2 py-0.5 rounded-md font-bold uppercase">{it.item.split(' ')[0]}</span>
                         ))}
-                        {group.items.length > 3 && <span className="text-[9px] text-slate-600 font-bold">+{group.items.length - 3} more</span>}
+                        {group.items.length > 3 && <span className="text-[9px] text-[var(--text-dim)] font-bold">+{group.items.length - 3} more</span>}
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
                     <div className="text-right">
                       <p className="text-neon-blue text-xl font-black">${group.totalCost.toFixed(2)}</p>
-                      <p className="text-[9px] text-slate-600 font-bold uppercase">Total AUD</p>
+                      <p className="text-[9px] text-[var(--text-dim)] font-bold uppercase">Total AUD</p>
                     </div>
-                    <span className={`text-slate-600 transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▼</span>
+                    <span className={`text-[var(--text-dim)] transition-transform ${isExpanded ? 'rotate-180' : ''}`}>▼</span>
                   </div>
                 </div>
 
                 {/* Expanded Details Table */}
                 {isExpanded && (
-                  <div className="border-t border-white/5 bg-black/20 p-4">
+                  <div className="border-t border-[var(--sidebar-border)] bg-[var(--bg-main)]/30 p-4">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="text-[9px] text-slate-500 font-black uppercase tracking-[0.2em] border-b border-white/5">
+                        <tr className="text-[9px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] border-b border-[var(--sidebar-border)]">
                           <th className="py-3 px-4 text-left">Component Item</th>
                           <th className="py-3 px-4 text-left">Quantity / Serving</th>
                           <th className="py-3 px-4 text-center">Duration</th>
@@ -402,19 +402,19 @@ export default function ExpenseTracker() {
                           <th className="w-10"></th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/[0.02]">
+                      <tbody className="divide-y divide-[var(--sidebar-border)]/50">
                         {group.items.map(exp => (
-                          <tr key={exp.id} className="hover:bg-white/[0.01]">
-                            <td className="py-3 px-4 text-white font-bold">{exp.item}</td>
-                            <td className="py-3 px-4 text-slate-400 text-xs">
+                          <tr key={exp.id} className="hover:bg-[var(--glass-bg)]/10">
+                            <td className="py-3 px-4 text-[var(--text-main)] font-bold">{exp.item}</td>
+                            <td className="py-3 px-4 text-[var(--text-muted)] text-xs">
                               {exp.quantity} {exp.serving_size ? `(${exp.serving_size}/day)` : ''}
                             </td>
                             <td className="py-3 px-4 text-center">
-                              <span className="text-[10px] text-slate-600 font-black">{exp.num_days || 1}D</span>
+                              <span className="text-[10px] text-[var(--text-dim)] font-black">{exp.num_days || 1}D</span>
                             </td>
-                            <td className="py-3 px-4 text-right font-bold text-slate-300">${exp.cost}</td>
+                            <td className="py-3 px-4 text-right font-bold text-[var(--text-muted)]">${exp.cost}</td>
                             <td className="py-3 px-4 text-center">
-                              <button onClick={() => handleDelete(exp.id)} className="text-slate-700 hover:text-red-400 font-black">×</button>
+                              <button onClick={() => handleDelete(exp.id)} className="text-[var(--text-dim)] hover:text-red-400 font-black">×</button>
                             </td>
                           </tr>
                         ))}
