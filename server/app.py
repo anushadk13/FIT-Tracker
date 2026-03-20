@@ -9,9 +9,15 @@ from routes.expenses import expenses_router
 from routes.gym import gym_router
 import uvicorn
 
+import asyncio
+
 print("Initializing database explicitly for Vercel cold-start...")
 try:
-    init_db()
+    try:
+        loop = asyncio.get_running_loop()
+        loop.create_task(init_db())
+    except RuntimeError:
+        asyncio.run(init_db())
     print("Database ready.")
 except Exception as e:
     print(f"Database initialization failed: {e}")
@@ -33,11 +39,12 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 @app.get("/api/health")
-def health_check():
+async def health_check():
     try:
-        from db import get_connection
-        conn = get_connection()
-        conn.close()
+        from db import engine
+        from sqlalchemy import text
+        async with engine.connect() as conn:
+            await conn.execute(text("SELECT 1"))
         db_status = "connected"
     except Exception as e:
         db_status = f"failed: {e}"
