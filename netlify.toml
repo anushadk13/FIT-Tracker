@@ -6,7 +6,7 @@
 # Proxy /api requests to the backend to avoid index.html fallback
 [[redirects]]
   from = "/api/*"
-  to = "https://fit-tracker-9yghcey5s-anushadk13s-projects.vercel.app/api/:splat"
+  to = "https://fit-tracker-ashen.vercel.app/api/:splat"
   status = 200
 
 # SPA Fallback
@@ -17,4 +17,4 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  VITE_API_URL = "https://fit-tracker-9yghcey5s-anushadk13s-projects.vercel.app"
+  VITE_API_URL = "https://fit-tracker-ashen.vercel.app"
