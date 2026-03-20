@@ -11,20 +11,14 @@ import uvicorn
 
 import asyncio
 
-print("Initializing database explicitly for Vercel cold-start...")
-try:
-    try:
-        loop = asyncio.get_running_loop()
-        loop.create_task(init_db())
-    except RuntimeError:
-        asyncio.run(init_db())
-    print("Database ready.")
-except Exception as e:
-    print(f"Database initialization failed: {e}")
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Lifespan serves local dev properly, but may not trigger on Vercel standard builder
+    print("Initializing database...")
+    try:
+        await init_db()
+        print("Database ready.")
+    except Exception as e:
+        print(f"Database initialization failed: {e}")
     yield
 
 app = FastAPI(title="FitTracker API", lifespan=lifespan)
