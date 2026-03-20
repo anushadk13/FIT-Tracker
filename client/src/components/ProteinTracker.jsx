@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { API_URL } from '../config'
 
-const API = import.meta.env.VITE_API_URL || ''
+const API = API_URL
 
 const PROTEIN_VALUES = {
   soy_milk: 7.5,

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
+import { API_URL } from '../config'
 
-const API = import.meta.env.VITE_API_URL || ''
+const API = API_URL
 
 const ENTRY_ITEMS = [
   { id: 'greek_yogurt', label: 'Greek yogurt' },
