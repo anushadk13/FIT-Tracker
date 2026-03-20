@@ -55,7 +55,9 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://localhost:5174",
-        "https://cosmic-cascaron-316988.netlify.app"
+        "http://localhost:5175",
+        "https://cosmic-cascaron-316988.netlify.app",
+        "https://shimmering-crepe-9844db.netlify.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],

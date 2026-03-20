@@ -50,7 +50,9 @@ if "neon.tech" in DATABASE_URL:
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
     connect_args["ssl"] = ctx
+    print("SSL context configured for Neon DB.")
 
+print(f"Creating engine for URL: {DATABASE_URL.split('@')[-1]}") # Log host/db only for safety
 engine = create_async_engine(
     DATABASE_URL,
     connect_args=connect_args,
