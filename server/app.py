@@ -9,7 +9,6 @@ from routes.expenses import expenses_router
 from routes.gym import gym_router
 import uvicorn
 
-import asyncio
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -56,9 +55,6 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost:5174",
         "http://localhost:5175",
-        "https://cosmic-cascaron-316988.netlify.app",
-        "https://shimmering-crepe-9844db.netlify.app",
-        "https://fit-tracker-ashen.vercel.app",
         "https://roaring-faun-a1bc7c.netlify.app"
     ],
     allow_credentials=True,
@@ -72,5 +68,4 @@ app.include_router(expenses_router, prefix="/api/expenses", tags=["expenses"])
 app.include_router(gym_router, prefix="/api/gym", tags=["gym"])
 
 if __name__ == "__main__":
-    # Using port 5001 because macOS AirPlay Receiver often occupies 5000
     uvicorn.run("app:app", host="0.0.0.0", port=5001, reload=True)

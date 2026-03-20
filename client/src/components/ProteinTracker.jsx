@@ -4,10 +4,9 @@ import { API_URL } from '../config'
 const API = API_URL
 
 const PROTEIN_VALUES = {
-  soy_milk: 7.5,
-  greek_yogurt: 6,
-  bread: 21.4,
-  veg_protein: 26.4,
+  morning: 7.5,
+  afternoon: 24.6,
+  night: 24.6,
 }
 
 const SYNC_INTERVAL = 120000 // 2 minutes
@@ -129,7 +128,7 @@ export default function ProteinTracker() {
   }, [])
 
   const toggleFood = (date, field) => {
-    const current = logs[date] || { date, soy_milk: false, greek_yogurt: false, bread: false, veg_protein: false }
+    const current = logs[date] || { date, morning: false, afternoon: false, night: false }
     const updated = { ...current, [field]: !current[field] }
 
     setLogs(prev => ({ ...prev, [date]: updated }))
@@ -179,63 +178,88 @@ export default function ProteinTracker() {
   }
 
   const foods = [
-    { key: 'soy_milk', label: 'Soy Milk', icon: '🥛', gram: '7.5g' },
-    { key: 'greek_yogurt', label: 'Yogurt', icon: '🥣', gram: '6g' },
-    { key: 'bread', label: 'Bread', icon: '🍞', gram: '21.4g' },
-    { key: 'veg_protein', label: 'Veg Prot', icon: '🥗', gram: '26.4g' },
+    { key: 'morning', label: 'Morning', icon: '☕', gram: '7.5g', cal: '165c', detail: 'Soy Hot Chocolate' },
+    { key: 'afternoon', label: 'Afternoon', icon: '🍚', gram: '24.6g', cal: '502c', detail: 'Rice(200g)+VegProt(25g)+Yogurt(125g)' },
+    { key: 'night', label: 'Night', icon: '🍚', gram: '24.6g', cal: '502c', detail: 'Rice(200g)+VegProt(25g)+Yogurt(125g)' },
   ]
 
   return (
     <div className="fade-in space-y-6 max-w-6xl mx-auto">
       {/* Top Banner: Smart Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="glass rounded-3xl p-6 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl group-hover:scale-110 transition-transform">📈</div>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Weekly Average</p>
-          <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-white">{stats.avg}</h3>
-            <span className="text-neon-green font-bold text-lg">g/day</span>
-          </div>
-          <p className="text-slate-500 text-[10px] mt-2 italic">Calculated over rolling 7 days</p>
-        </div>
-
-        <div className="glass rounded-3xl p-6 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl group-hover:scale-110 transition-transform">🎯</div>
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Goal Success</p>
-          <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-white">{stats.metGoalCount}/7</h3>
-            <span className="text-yellow-400 font-bold text-lg">days</span>
-          </div>
-          <div className="w-full bg-white/5 h-1.5 rounded-full mt-3 overflow-hidden">
-            <div className="h-full bg-yellow-400 rounded-full shadow-[0_0_8px_rgba(250,204,21,0.5)]" style={{ width: `${stats.percent}%` }} />
-          </div>
-        </div>
-
-        <div className="glass rounded-3xl p-6 flex flex-col justify-between">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">System Status</p>
-              <div className="flex items-center gap-1.5">
-                <span className={`w-2 h-2 rounded-full ${pendingDates.size > 0 ? 'bg-yellow-400 animate-pulse' : 'bg-neon-green'}`} />
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-                  {pendingDates.size > 0 ? 'Syncing' : 'Ready'}
-                </span>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        {/* COMBINED STATS CARD */}
+        <div className="lg:col-span-2 glass rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between border border-white/5">
+          <div className="flex justify-between items-start mb-8">
+            <div className="group">
+              <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-3">Weekly Average</p>
+              <div className="flex items-baseline gap-2">
+                <h3 className="text-5xl font-black text-white group-hover:text-neon-green transition-colors">{stats.avg}</h3>
+                <span className="text-neon-green font-bold text-lg">g/day</span>
               </div>
             </div>
-            <button
-              onClick={syncData}
-              disabled={isSyncing || pendingDates.size === 0}
-              className="glass p-2 rounded-xl hover:bg-white/10 transition-colors disabled:opacity-20"
-            >
-              🔄
-            </button>
+            <div className="text-right">
+               <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-3">Goal Success</p>
+               <h3 className="text-3xl font-black text-white">{stats.metGoalCount}<span className="text-slate-500 text-lg">/7 days</span></h3>
+            </div>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
+
+          <div className="space-y-4">
+            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+              <span>Goal Progress</span>
+              <span className="text-yellow-400">{stats.percent}%</span>
+            </div>
+            <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden p-[1px]">
+              <div className="h-full bg-gradient-to-r from-yellow-500 to-yellow-300 rounded-full shadow-[0_0_12px_rgba(250,204,21,0.4)] transition-all duration-1000" style={{ width: `${stats.percent}%` }} />
+            </div>
+            <p className="text-[10px] text-slate-500 italic">Rolling 7-day performance window</p>
+          </div>
+        </div>
+
+        {/* DIET PROTOCOL CARD (Taking up more space) */}
+        <div className="lg:col-span-3 glass rounded-3xl p-6 border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent">
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">Diet Protocol</p>
+            <div className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${pendingDates.size > 0 ? 'bg-yellow-400 animate-pulse' : 'bg-neon-green shadow-[0_0_8px_#39FF14]'}`} />
+              <button onClick={syncData} disabled={isSyncing || pendingDates.size === 0} className="hover:opacity-70 transition-opacity disabled:opacity-10">
+                <span className="text-xs">🔄</span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="space-y-3">
             {foods.map(f => (
-              <span key={f.key} className="px-2 py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] text-slate-400">
-                {f.icon} {f.gram}
-              </span>
+              <div key={f.key} className="flex items-center gap-3 group">
+                <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-lg border border-white/5 group-hover:border-white/20 transition-all">
+                  {f.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-baseline mb-0.5">
+                    <span className="text-[10px] font-black text-white/80 uppercase tracking-tight">{f.label}</span>
+                    <span className="text-[10px] font-black text-neon-green">{f.gram} <span className="text-slate-500">({f.cal})</span></span>
+                  </div>
+                  <p className="text-[9px] text-slate-500 font-medium truncate">{f.detail}</p>
+                </div>
+              </div>
             ))}
+          </div>
+
+          {/* TOTALS SECTION */}
+          <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center">
+             <div className="flex flex-col">
+               <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Daily Potential</span>
+               <span className="text-xs font-black text-white">Full Protocol</span>
+             </div>
+             <div className="flex gap-4">
+               <div className="text-right">
+                 <p className="text-[9px] font-black text-neon-green uppercase">Protein</p>
+                 <p className="text-sm font-black text-white">56.7g</p>
+               </div>
+               <div className="text-right border-l border-white/10 pl-4">
+                 <p className="text-[9px] font-black text-yellow-400 uppercase">Calories</p>
+                 <p className="text-sm font-black text-white">1169c</p>
+               </div>
+             </div>
           </div>
         </div>
       </div>
@@ -305,7 +329,7 @@ export default function ProteinTracker() {
                         <div className="relative inline-flex items-center justify-center">
                           <input
                             type="checkbox"
-                            className="checkbox-custom scale-110"
+                            className="checkbox-custom checkbox-bounce scale-110"
                             checked={!!log[f.key]}
                             onChange={() => toggleFood(date, f.key)}
                           />
@@ -370,7 +394,7 @@ export default function ProteinTracker() {
                         onClick={() => toggleFood(date, f.key)}
                         className={`flex flex-col items-center gap-2 p-2 rounded-2xl border transition-all active:scale-95 ${log[f.key] ? 'bg-white/10 border-white/20' : 'bg-black/20 border-white/5 opacity-40'}`}
                       >
-                         <span className="text-xl">{f.icon}</span>
+                         <span className={`text-xl transition-transform ${log[f.key] ? 'scale-125' : 'scale-100'}`}>{f.icon}</span>
                          <span className="text-[8px] font-black uppercase tracking-tight text-slate-500">{f.label}</span>
                       </div>
                     ))}

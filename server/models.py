@@ -8,10 +8,9 @@ class ProteinLog(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     date = Column(Date, nullable=False, unique=True)
-    soy_milk = Column(Boolean, default=False)
-    greek_yogurt = Column(Boolean, default=False)
-    bread = Column(Boolean, default=False)
-    veg_protein = Column(Boolean, default=False)
+    morning = Column(Boolean, default=False)
+    afternoon = Column(Boolean, default=False)
+    night = Column(Boolean, default=False)
 
 class Expense(Base):
     __tablename__ = "expenses"

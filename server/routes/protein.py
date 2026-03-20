@@ -12,10 +12,9 @@ protein_router = APIRouter()
 
 class ProteinLogSchema(BaseModel):
     date: date
-    soy_milk: Optional[bool] = False
-    greek_yogurt: Optional[bool] = False
-    bread: Optional[bool] = False
-    veg_protein: Optional[bool] = False
+    morning: Optional[bool] = False
+    afternoon: Optional[bool] = False
+    night: Optional[bool] = False
 
 @protein_router.get("/", response_model=List[dict])
 async def get_all(db: AsyncSession = Depends(get_db)):
@@ -23,7 +22,7 @@ async def get_all(db: AsyncSession = Depends(get_db)):
     rows = result.scalars().all()
     res = []
     for r in rows:
-        d = {"id": r.id, "date": r.date.isoformat(), "soy_milk": r.soy_milk, "greek_yogurt": r.greek_yogurt, "bread": r.bread, "veg_protein": r.veg_protein}
+        d = {"id": r.id, "date": r.date.isoformat(), "morning": r.morning, "afternoon": r.afternoon, "night": r.night}
         res.append(d)
     return res
 
@@ -31,22 +30,21 @@ async def get_all(db: AsyncSession = Depends(get_db)):
 async def upsert(data: ProteinLogSchema, db: AsyncSession = Depends(get_db)):
     try:
         stmt = insert(ProteinLog).values(
-            date=data.date, soy_milk=data.soy_milk, greek_yogurt=data.greek_yogurt, bread=data.bread, veg_protein=data.veg_protein
+            date=data.date, morning=data.morning, afternoon=data.afternoon, night=data.night
         )
         stmt = stmt.on_conflict_do_update(
             index_elements=['date'],
             set_=dict(
-                soy_milk=stmt.excluded.soy_milk,
-                greek_yogurt=stmt.excluded.greek_yogurt,
-                bread=stmt.excluded.bread,
-                veg_protein=stmt.excluded.veg_protein
+                morning=stmt.excluded.morning,
+                afternoon=stmt.excluded.afternoon,
+                night=stmt.excluded.night
             )
         ).returning(ProteinLog)
         
         result = await db.execute(stmt)
         row = result.scalar_one()
         await db.commit()
-        return {"id": row.id, "date": row.date.isoformat(), "soy_milk": row.soy_milk, "greek_yogurt": row.greek_yogurt, "bread": row.bread, "veg_protein": row.veg_protein}
+        return {"id": row.id, "date": row.date.isoformat(), "morning": row.morning, "afternoon": row.afternoon, "night": row.night}
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
