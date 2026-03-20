@@ -58,7 +58,8 @@ app.add_middleware(
         "http://localhost:5175",
         "https://cosmic-cascaron-316988.netlify.app",
         "https://shimmering-crepe-9844db.netlify.app",
-        "https://fit-tracker-ashen.vercel.app"
+        "https://fit-tracker-ashen.vercel.app",
+        "https://roaring-faun-a1bc7c.netlify.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
