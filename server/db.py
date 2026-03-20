@@ -15,6 +15,7 @@ for key in list(os.environ.keys()):
 
 # 1. Environment and URL Configuration
 raw_url = os.environ.get("DATABASE_URL", "postgresql+asyncpg://icu_user:icu_password@db/icu_db")
+raw_url = raw_url.strip()
 
 # 2. URL Cleaning & Formatting
 if raw_url.startswith("psql "):
@@ -23,6 +24,7 @@ if raw_url.startswith("'") and raw_url.endswith("'"):
     raw_url = raw_url.strip("'")
 if raw_url.startswith('"') and raw_url.endswith('"'):
     raw_url = raw_url.strip('"')
+raw_url = raw_url.strip()
 
 parsed = urlparse(raw_url)
 # Enforcing Async
